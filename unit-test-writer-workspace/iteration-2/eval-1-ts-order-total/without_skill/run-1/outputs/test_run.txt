@@ -1,0 +1,55 @@
+
+ RUN  v2.1.9 /Users/colldy/Desktop/Claude/unit-test-writer-workspace/iteration-2/eval-1-ts-order-total/without_skill/run-1/project
+
+ ❯ src/cart/pricing.test.ts (32 tests | 2 failed) 11ms
+   × calculateOrderTotal > 쿠폰 할인 > PERCENT 쿠폰 > 나누어 떨어지는 금액은 1원도 덜 할인하지 않는다 (부동소수점 오차) 4ms
+     → expected 3849 to be 3850 // Object.is equality
+   × calculateOrderTotal > 배송비 > 할인 후 상품 금액이 정확히 50,000원이면 무료배송이다 0ms
+     → expected 3000 to be +0 // Object.is equality
+ ✓ src/cart/format.test.ts (2 tests) 27ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/cart/pricing.test.ts > calculateOrderTotal > 쿠폰 할인 > PERCENT 쿠폰 > 나누어 떨어지는 금액은 1원도 덜 할인하지 않는다 (부동소수점 오차)
+AssertionError: expected 3849 to be 3850 // Object.is equality
+
+- Expected
++ Received
+
+- 3850
++ 3849
+
+ ❯ src/cart/pricing.test.ts:128:39
+    126|         const result = calculateOrderTotal([item('A', 11_000)], 'BASIC…
+    127| 
+    128|         expect(result.couponDiscount).toBe(3_850);
+       |                                       ^
+    129|       });
+    130|     });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  src/cart/pricing.test.ts > calculateOrderTotal > 배송비 > 할인 후 상품 금액이 정확히 50,000원이면 무료배송이다
+AssertionError: expected 3000 to be +0 // Object.is equality
+
+- Expected
++ Received
+
+- 0
++ 3000
+
+ ❯ src/cart/pricing.test.ts:192:34
+    190|       const result = calculateOrderTotal([item('A', 50_000)]);
+    191| 
+    192|       expect(result.shippingFee).toBe(0);
+       |                                  ^
+    193|       expect(result.total).toBe(50_000);
+    194|     });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+ Test Files  1 failed | 1 passed (2)
+      Tests  2 failed | 32 passed (34)
+   Start at  11:42:12
+   Duration  298ms (transform 46ms, setup 0ms, collect 81ms, tests 38ms, environment 0ms, prepare 95ms)
+

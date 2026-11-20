@@ -1,0 +1,756 @@
+{
+  "metadata": {
+    "skill_name": "unit-test-writer",
+    "skill_path": "/Users/colldy/Desktop/Claude/unit-test-writer",
+    "executor_model": "claude-opus-5-5",
+    "analyzer_model": "<model-name>",
+    "timestamp": "2026-11-20T02:45:49Z",
+    "evals_run": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "runs_per_configuration": 1
+  },
+  "runs": [
+    {
+      "eval_id": 1,
+      "configuration": "with_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 1.0,
+        "passed": 12,
+        "failed": 0,
+        "total": 12,
+        "time_seconds": 195.6,
+        "tokens": 66296,
+        "tool_calls": 14,
+        "errors": 0
+      },
+      "expectations": [
+        {
+          "text": "New test file is co-located at src/cart/pricing.test.ts, matching the existing format.test.ts convention",
+          "passed": true,
+          "evidence": "src/cart/pricing.test.ts next to format.test.ts"
+        },
+        {
+          "text": "Test descriptions (describe/it) are written in Korean, matching the existing test file",
+          "passed": true,
+          "evidence": "Korean describe/it names"
+        },
+        {
+          "text": "Final vitest run reports 0 failed tests (all pass, or the known bug is intentionally marked with it.fails/skip)",
+          "passed": true,
+          "evidence": "Independent re-run: Tests 29 passed (29), 2 are it.fails"
+        },
+        {
+          "text": "Production code src/cart/pricing.ts is unchanged",
+          "passed": true,
+          "evidence": "pricing.ts UNCHANGED"
+        },
+        {
+          "text": "A test checks the free-shipping boundary at exactly 50,000 and expects shippingFee 0 as the JSDoc specifies (does not assert the buggy 3,000)",
+          "passed": true,
+          "evidence": "it.fails '상품 금액이 정확히 50,000원이면 무료배송이다 (BUG: ...)' asserts free shipping"
+        },
+        {
+          "text": "The free-shipping boundary bug (> vs >=) is reported to the user in report.md with expected vs actual",
+          "passed": true,
+          "evidence": "final_message.md lists bug at pricing.ts:53, 50,000 → 3,000 fee, fix '>='"
+        },
+        {
+          "text": "The boundary-bug test is kept and marked as a known failure (it.fails / test.failing / skip with BUG reason), not deleted or weakened",
+          "passed": true,
+          "evidence": "it.fails at line 203 (+ float bug it.fails at 121); report says switch it.fails → it after fix"
+        },
+        {
+          "text": "Covers RangeError for invalid quantity (0 or negative) and non-integer quantity",
+          "passed": true,
+          "evidence": "it.each over invalid quantities incl. 0/negative/1.5 → RangeError, SKU in message"
+        },
+        {
+          "text": "Covers coupon minOrderAmount threshold (applies at the threshold, not below it)",
+          "passed": true,
+          "evidence": "it.each 'minOrderAmount 30,000원 쿠폰은 금액이 그 이상일 때만 적용한다' + after-membership comparison"
+        },
+        {
+          "text": "Covers FIXED coupon being capped so the merchandise amount cannot go below 0",
+          "passed": true,
+          "evidence": "FIXED 20,000 on 9,700 after SILVER → capped"
+        },
+        {
+          "text": "tsc --noEmit type check passes with the new test file included",
+          "passed": true,
+          "evidence": "tsc exit 0"
+        },
+        {
+          "text": "Never modifies production source files on disk, even temporarily (verified from transcript tool calls)",
+          "passed": true,
+          "evidence": "Fix/mutant checks ran in mktemp -d copy; no writes to project pricing.ts"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "eval_id": 2,
+      "configuration": "with_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 1.0,
+        "passed": 13,
+        "failed": 0,
+        "total": 13,
+        "time_seconds": 219.0,
+        "tokens": 71084,
+        "tool_calls": 10,
+        "errors": 0
+      },
+      "expectations": [
+        {
+          "text": "Test file is placed in tests/ with a test_*.py name",
+          "passed": true,
+          "evidence": "tests/test_renewal.py"
+        },
+        {
+          "text": "Reuses the make_subscription fixture from tests/conftest.py",
+          "passed": true,
+          "evidence": "make_subscription used 44x"
+        },
+        {
+          "text": "Current time is controlled deterministically (no test depends on the real wall clock)",
+          "passed": true,
+          "evidence": "monkeypatch.setattr('billing.renewal.datetime', _FrozenDatetime)"
+        },
+        {
+          "text": "Final pytest run reports all tests passing (0 failed)",
+          "passed": true,
+          "evidence": "Independent re-run: 25 passed"
+        },
+        {
+          "text": "Production code under billing/ is unchanged",
+          "passed": true,
+          "evidence": "billing/ UNCHANGED"
+        },
+        {
+          "text": "Covers PaymentError below the limit: failed_attempts incremented, saved, 'renewal_failed' sent with correct remaining_attempts",
+          "passed": true,
+          "evidence": "renewal_failed remaining_attempts parametrized 2→1, saved counts 1,2"
+        },
+        {
+          "text": "Covers the 3rd PaymentError: status becomes SUSPENDED and 'subscription_suspended' is sent",
+          "passed": true,
+          "evidence": "3rd failure: repo.saved[0].status SUSPENDED, notifier subscription_suspended only"
+        },
+        {
+          "text": "Covers PaymentGatewayUnavailable: failed_attempts not incremented AND later subscriptions in the batch are not charged",
+          "passed": true,
+          "evidence": "gateway unavailable: counter unchanged + rest of batch aborted (side_effect ['tx-a', Unavailable])"
+        },
+        {
+          "text": "Covers success: expires_at extended by 30 days, failed_attempts reset to 0, 'renewal_success' sent",
+          "passed": true,
+          "evidence": "expires_at +30d from old expiry, counter reset, renewal_success with new expiry"
+        },
+        {
+          "text": "Asserts the idempotency_key format '{subscription id}:{YYYYMMDD of expires_at}'",
+          "passed": true,
+          "evidence": "idempotency_key='sub-42:20250228'"
+        },
+        {
+          "text": "Covers CANCELLED and SUSPENDED subscriptions being skipped without charging",
+          "passed": true,
+          "evidence": "parametrize [CANCELLED, SUSPENDED] skipped without charge"
+        },
+        {
+          "text": "Does not falsely claim a bug in renewal.py (report contains no false-positive bug claims)",
+          "passed": true,
+          "evidence": "report: no bugs; two design concerns clearly labelled as not bugs"
+        },
+        {
+          "text": "Never modifies production source files on disk, even temporarily (verified from transcript tool calls)",
+          "passed": true,
+          "evidence": "17 mutants run in temp-dir copy; project renewal.py never written"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "eval_id": 3,
+      "configuration": "with_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 1.0,
+        "passed": 14,
+        "failed": 0,
+        "total": 14,
+        "time_seconds": 210.2,
+        "tokens": 66390,
+        "tool_calls": 11,
+        "errors": 0
+      },
+      "expectations": [
+        {
+          "text": "Test file is at src/test/java/com/example/order/OrderServiceTest.java",
+          "passed": true,
+          "evidence": "src/test/java/com/example/order/OrderServiceTest.java"
+        },
+        {
+          "text": "Uses JUnit 5 + Mockito with AssertJ assertions, matching the existing OrderTest",
+          "passed": true,
+          "evidence": "@ExtendWith(MockitoExtension.class) + AssertJ"
+        },
+        {
+          "text": "Uses Korean @DisplayName and given/when/then structure, matching the existing OrderTest convention",
+          "passed": true,
+          "evidence": "11 Korean @DisplayName, 10 given blocks"
+        },
+        {
+          "text": "Final Maven test run reports 0 failures and 0 errors",
+          "passed": true,
+          "evidence": "Independent re-run: OrderServiceTest 15 run, 0 failures, 1 skipped"
+        },
+        {
+          "text": "Production code under src/main is unchanged",
+          "passed": true,
+          "evidence": "src/main UNCHANGED"
+        },
+        {
+          "text": "A test for an already-CANCELLED order expects no refund / no side effects as the Javadoc specifies (does not assert the buggy refund)",
+          "passed": true,
+          "evidence": "cancelOrder_alreadyCancelledOrder_doesNothing asserts no side effects"
+        },
+        {
+          "text": "The already-cancelled idempotency bug is reported to the user in report.md with expected vs actual",
+          "passed": true,
+          "evidence": "final_message: re-refund 15,500 at OrderService.java:48, fix described"
+        },
+        {
+          "text": "The idempotency-bug test is kept and marked @Disabled with a BUG reason, not deleted or weakened",
+          "passed": true,
+          "evidence": "@Disabled(\"BUG: 이미 취소된 주문은 아무 작업도 하지 않아야 하는데(멱등), 실제로는 다시 15,500원을 환불...\"); report says delete @Disabled after fix"
+        },
+        {
+          "text": "Covers PAID order refund amount including the shipping fee",
+          "passed": true,
+          "evidence": "verify(paymentGateway).refund(ORDER_ID, 15_500L)"
+        },
+        {
+          "text": "Covers PaymentException: exception propagates and inventory is not released, order not saved, no event published",
+          "passed": true,
+          "evidence": "doThrow(PaymentException) → no release/save/publish"
+        },
+        {
+          "text": "Covers SHIPPED and DELIVERED orders throwing IllegalStateException",
+          "passed": true,
+          "evidence": "@EnumSource(names = {SHIPPED, DELIVERED})"
+        },
+        {
+          "text": "Covers blank and null reason throwing IllegalArgumentException",
+          "passed": true,
+          "evidence": "@NullAndEmptySource + blanks; repository never queried"
+        },
+        {
+          "text": "Verifies OrderCancelledEvent contents (refundedAmount and reason)",
+          "passed": true,
+          "evidence": "inOrder.verify(eventPublisher).publish(new OrderCancelledEvent(..., 15_500L, REASON))"
+        },
+        {
+          "text": "Never modifies production source files on disk, even temporarily (verified from transcript tool calls)",
+          "passed": true,
+          "evidence": "Fix + 9 mutants run in mktemp -d copy (cd \"$TMP\" before editing)"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "eval_id": 4,
+      "configuration": "with_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 1.0,
+        "passed": 15,
+        "failed": 0,
+        "total": 15,
+        "time_seconds": 194.8,
+        "tokens": 64781,
+        "tool_calls": 9,
+        "errors": 0
+      },
+      "expectations": [
+        {
+          "text": "Test file is service_test.go next to service.go, in package points (same as lot_test.go)",
+          "passed": true,
+          "evidence": "service_test.go, package points"
+        },
+        {
+          "text": "go.mod is unchanged (no new test dependencies; stdlib testing only)",
+          "passed": true,
+          "evidence": "go.mod UNCHANGED, only \"testing\" + stdlib imports"
+        },
+        {
+          "text": "Uses table-driven subtests with t.Run and got/want style messages, matching lot_test.go",
+          "passed": true,
+          "evidence": "t.Run table tests, 'Redeem() error = %v, want ...' messages"
+        },
+        {
+          "text": "Final go test run passes (0 failures; known bug skipped)",
+          "passed": true,
+          "evidence": "Independent go test: PASS (1 SKIP)"
+        },
+        {
+          "text": "Production code (service.go, lot.go) is unchanged",
+          "passed": true,
+          "evidence": "service.go, lot.go UNCHANGED"
+        },
+        {
+          "text": "A test expects the soonest-expiring lot to be consumed first even when it was earned later (does not assert the buggy EarnedAt order)",
+          "passed": true,
+          "evidence": "TestRedeem_DeductsSoonestExpiringLotFirst: want map[soon:30]"
+        },
+        {
+          "text": "The expiry-order bug is reported to the user with expected vs actual and location",
+          "passed": true,
+          "evidence": "final_message: service.go:62-64 sorts by EarnedAt only; want map[soon:30] got map[old:30]"
+        },
+        {
+          "text": "The expiry-order bug test is kept and marked with t.Skip(\"BUG: ...\"), not deleted or weakened",
+          "passed": true,
+          "evidence": "t.Skip(\"BUG: 만료 임박 순이 아니라 적립 순(EarnedAt)으로 차감한다 — want ... got ...\"); report says delete that t.Skip line after fix"
+        },
+        {
+          "text": "Time is controlled by setting the Service's now field (no dependence on the real clock)",
+          "passed": true,
+          "evidence": "svc.now = func() time.Time { return testNow }"
+        },
+        {
+          "text": "Uses a hand-written fake Store that records what SaveLots received",
+          "passed": true,
+          "evidence": "type fakeStore records SaveLots input"
+        },
+        {
+          "text": "Covers ErrInvalidAmount for zero and negative amounts",
+          "passed": true,
+          "evidence": "table test → errors.Is(err, ErrInvalidAmount) for 0 and negative"
+        },
+        {
+          "text": "Covers ErrInsufficientPoints via errors.Is AND that SaveLots is not called",
+          "passed": true,
+          "evidence": "errors.Is(err, ErrInsufficientPoints) + no save"
+        },
+        {
+          "text": "Covers Store errors (ListLots and SaveLots) being wrapped so errors.Is finds the cause",
+          "passed": true,
+          "evidence": "ListLotsError / SaveLotsError: errors.Is(err, errDB)"
+        },
+        {
+          "text": "Covers expired lots (including ExpiresAt == now) being unusable and dropped on save, and fully used lots being dropped",
+          "passed": true,
+          "evidence": "expired incl. ExpiresAt == now and Amount 0 lots dropped from saved lots"
+        },
+        {
+          "text": "Never modifies production source files on disk, even temporarily (verified from transcript tool calls)",
+          "passed": true,
+          "evidence": "Fix + 11 mutants run in mktemp -d copy via perl -pi on the copy"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "eval_id": 1,
+      "configuration": "without_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 0.8333,
+        "passed": 10,
+        "failed": 2,
+        "total": 12,
+        "time_seconds": 146.2,
+        "tokens": 51060,
+        "tool_calls": 10,
+        "errors": 0
+      },
+      "expectations": [
+        {
+          "text": "New test file is co-located at src/cart/pricing.test.ts, matching the existing format.test.ts convention",
+          "passed": true,
+          "evidence": "src/cart/pricing.test.ts next to format.test.ts"
+        },
+        {
+          "text": "Test descriptions (describe/it) are written in Korean, matching the existing test file",
+          "passed": true,
+          "evidence": "Korean describe/it names"
+        },
+        {
+          "text": "Final vitest run reports 0 failed tests (all pass, or the known bug is intentionally marked with it.fails/skip)",
+          "passed": false,
+          "evidence": "Independent re-run: Tests 2 failed | 32 passed (34)"
+        },
+        {
+          "text": "Production code src/cart/pricing.ts is unchanged",
+          "passed": true,
+          "evidence": "pricing.ts UNCHANGED"
+        },
+        {
+          "text": "A test checks the free-shipping boundary at exactly 50,000 and expects shippingFee 0 as the JSDoc specifies (does not assert the buggy 3,000)",
+          "passed": true,
+          "evidence": "'할인 후 상품 금액이 정확히 50,000원이면 무료배송이다' expects 0 shipping"
+        },
+        {
+          "text": "The free-shipping boundary bug (> vs >=) is reported to the user in report.md with expected vs actual",
+          "passed": true,
+          "evidence": "report: '>' vs '>=' at line 53 with fix"
+        },
+        {
+          "text": "The boundary-bug test is kept and marked as a known failure (it.fails / test.failing / skip with BUG reason), not deleted or weakened",
+          "passed": false,
+          "evidence": "Left as plain failing it(); 'If the user wants a green suite, they can be switched to it.fails'"
+        },
+        {
+          "text": "Covers RangeError for invalid quantity (0 or negative) and non-integer quantity",
+          "passed": true,
+          "evidence": "0/negative/decimal/NaN/Infinity → RangeError"
+        },
+        {
+          "text": "Covers coupon minOrderAmount threshold (applies at the threshold, not below it)",
+          "passed": true,
+          "evidence": "describe('최소 주문 금액(minOrderAmount)') exact & 1원 below"
+        },
+        {
+          "text": "Covers FIXED coupon being capped so the merchandise amount cannot go below 0",
+          "passed": true,
+          "evidence": "FIXED 25,000 on SILVER 20,000 → capped"
+        },
+        {
+          "text": "tsc --noEmit type check passes with the new test file included",
+          "passed": true,
+          "evidence": "tsc exit 0"
+        },
+        {
+          "text": "Never modifies production source files on disk, even temporarily (verified from transcript tool calls)",
+          "passed": true,
+          "evidence": "No Edit/Write/Bash writes to pricing.ts found in transcript this round"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "eval_id": 2,
+      "configuration": "without_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 0.9231,
+        "passed": 12,
+        "failed": 1,
+        "total": 13,
+        "time_seconds": 246.7,
+        "tokens": 69944,
+        "tool_calls": 12,
+        "errors": 0
+      },
+      "expectations": [
+        {
+          "text": "Test file is placed in tests/ with a test_*.py name",
+          "passed": true,
+          "evidence": "tests/test_renewal.py"
+        },
+        {
+          "text": "Reuses the make_subscription fixture from tests/conftest.py",
+          "passed": true,
+          "evidence": "make_subscription used 70x"
+        },
+        {
+          "text": "Current time is controlled deterministically (no test depends on the real wall clock)",
+          "passed": true,
+          "evidence": "monkeypatch.setattr(renewal, 'datetime', FrozenDatetime)"
+        },
+        {
+          "text": "Final pytest run reports all tests passing (0 failed)",
+          "passed": true,
+          "evidence": "Independent re-run: 34 passed"
+        },
+        {
+          "text": "Production code under billing/ is unchanged",
+          "passed": true,
+          "evidence": "billing/ UNCHANGED (final state)"
+        },
+        {
+          "text": "Covers PaymentError below the limit: failed_attempts incremented, saved, 'renewal_failed' sent with correct remaining_attempts",
+          "passed": true,
+          "evidence": "first/second failure: count+1, renewal_failed 2 then 1"
+        },
+        {
+          "text": "Covers the 3rd PaymentError: status becomes SUSPENDED and 'subscription_suspended' is sent",
+          "passed": true,
+          "evidence": "third failure SUSPENDED, notifier.sent == [subscription_suspended]"
+        },
+        {
+          "text": "Covers PaymentGatewayUnavailable: failed_attempts not incremented AND later subscriptions in the batch are not charged",
+          "passed": true,
+          "evidence": "TestGatewayUnavailable: nothing counted/saved; batch stops"
+        },
+        {
+          "text": "Covers success: expires_at extended by 30 days, failed_attempts reset to 0, 'renewal_success' sent",
+          "passed": true,
+          "evidence": "success: +30 days, reset count, new expiry in notice"
+        },
+        {
+          "text": "Asserts the idempotency_key format '{subscription id}:{YYYYMMDD of expires_at}'",
+          "passed": true,
+          "evidence": "ChargeCall(... idempotency_key='sub-1:20250301')"
+        },
+        {
+          "text": "Covers CANCELLED and SUSPENDED subscriptions being skipped without charging",
+          "passed": true,
+          "evidence": "parametrize status [CANCELLED, SUSPENDED] skipped"
+        },
+        {
+          "text": "Does not falsely claim a bug in renewal.py (report contains no false-positive bug claims)",
+          "passed": true,
+          "evidence": "report lists 'issues that need a decision' — design concerns, no false bug claim"
+        },
+        {
+          "text": "Never modifies production source files on disk, even temporarily (verified from transcript tool calls)",
+          "passed": false,
+          "evidence": "Transcript: 'cp billing/renewal.py /tmp/...' then 12 mutants written into project billing/renewal.py, restored"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "eval_id": 3,
+      "configuration": "without_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 0.7857,
+        "passed": 11,
+        "failed": 3,
+        "total": 14,
+        "time_seconds": 153.7,
+        "tokens": 53259,
+        "tool_calls": 8,
+        "errors": 0
+      },
+      "expectations": [
+        {
+          "text": "Test file is at src/test/java/com/example/order/OrderServiceTest.java",
+          "passed": true,
+          "evidence": "OrderServiceTest.java in same package"
+        },
+        {
+          "text": "Uses JUnit 5 + Mockito with AssertJ assertions, matching the existing OrderTest",
+          "passed": true,
+          "evidence": "MockitoExtension + AssertJ"
+        },
+        {
+          "text": "Uses Korean @DisplayName and given/when/then structure, matching the existing OrderTest convention",
+          "passed": true,
+          "evidence": "11 Korean @DisplayName, 10 given blocks"
+        },
+        {
+          "text": "Final Maven test run reports 0 failures and 0 errors",
+          "passed": false,
+          "evidence": "Independent re-run: Tests run: 17, Failures: 1 — BUILD FAILURE"
+        },
+        {
+          "text": "Production code under src/main is unchanged",
+          "passed": true,
+          "evidence": "src/main UNCHANGED (final state)"
+        },
+        {
+          "text": "A test for an already-CANCELLED order expects no refund / no side effects as the Javadoc specifies (does not assert the buggy refund)",
+          "passed": true,
+          "evidence": "cancelOrder_alreadyCancelled_isNoOp asserts no side effects"
+        },
+        {
+          "text": "The already-cancelled idempotency bug is reported to the user in report.md with expected vs actual",
+          "passed": true,
+          "evidence": "final_message describes double refund at :48 with fix"
+        },
+        {
+          "text": "The idempotency-bug test is kept and marked @Disabled with a BUG reason, not deleted or weakened",
+          "passed": false,
+          "evidence": "Left failing intentionally ('no @Disabled so the bug stays visible')"
+        },
+        {
+          "text": "Covers PAID order refund amount including the shipping fee",
+          "passed": true,
+          "evidence": "TOTAL_WITH_SHIPPING = 15_500"
+        },
+        {
+          "text": "Covers PaymentException: exception propagates and inventory is not released, order not saved, no event published",
+          "passed": true,
+          "evidence": "PaymentException rethrown, nothing else changes"
+        },
+        {
+          "text": "Covers SHIPPED and DELIVERED orders throwing IllegalStateException",
+          "passed": true,
+          "evidence": "@EnumSource SHIPPED, DELIVERED"
+        },
+        {
+          "text": "Covers blank and null reason throwing IllegalArgumentException",
+          "passed": true,
+          "evidence": "@NullAndEmptySource"
+        },
+        {
+          "text": "Verifies OrderCancelledEvent contents (refundedAmount and reason)",
+          "passed": true,
+          "evidence": "publish(new OrderCancelledEvent(ORDER_ID, CUSTOMER_ID, TOTAL_WITH_SHIPPING, REASON))"
+        },
+        {
+          "text": "Never modifies production source files on disk, even temporarily (verified from transcript tool calls)",
+          "passed": false,
+          "evidence": "Transcript: applied fix and 4 mutants directly to project OrderService.java, restored + diffed"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "eval_id": 4,
+      "configuration": "without_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 0.8667,
+        "passed": 13,
+        "failed": 2,
+        "total": 15,
+        "time_seconds": 158.6,
+        "tokens": 53868,
+        "tool_calls": 8,
+        "errors": 0
+      },
+      "expectations": [
+        {
+          "text": "Test file is service_test.go next to service.go, in package points (same as lot_test.go)",
+          "passed": true,
+          "evidence": "service_test.go, package points"
+        },
+        {
+          "text": "go.mod is unchanged (no new test dependencies; stdlib testing only)",
+          "passed": true,
+          "evidence": "go.mod UNCHANGED, stdlib only"
+        },
+        {
+          "text": "Uses table-driven subtests with t.Run and got/want style messages, matching lot_test.go",
+          "passed": true,
+          "evidence": "t.Run table tests, got/want messages"
+        },
+        {
+          "text": "Final go test run passes (0 failures; known bug skipped)",
+          "passed": false,
+          "evidence": "Independent go test: --- FAIL: TestRedeem_Success, exit FAIL"
+        },
+        {
+          "text": "Production code (service.go, lot.go) is unchanged",
+          "passed": true,
+          "evidence": "service.go, lot.go UNCHANGED"
+        },
+        {
+          "text": "A test expects the soonest-expiring lot to be consumed first even when it was earned later (does not assert the buggy EarnedAt order)",
+          "passed": true,
+          "evidence": "'만료가_가장_임박한_lot_부터_차감' want map[y:50]"
+        },
+        {
+          "text": "The expiry-order bug is reported to the user with expected vs actual and location",
+          "passed": true,
+          "evidence": "final_message: lines 62-64 sort by EarnedAt only, got vs want, fix code"
+        },
+        {
+          "text": "The expiry-order bug test is kept and marked with t.Skip(\"BUG: ...\"), not deleted or weakened",
+          "passed": false,
+          "evidence": "Bug cases left failing in TestRedeem_Success, no t.Skip"
+        },
+        {
+          "text": "Time is controlled by setting the Service's now field (no dependence on the real clock)",
+          "passed": true,
+          "evidence": "s.now = func() time.Time { return testNow }"
+        },
+        {
+          "text": "Uses a hand-written fake Store that records what SaveLots received",
+          "passed": true,
+          "evidence": "type fakeStore records SaveLots"
+        },
+        {
+          "text": "Covers ErrInvalidAmount for zero and negative amounts",
+          "passed": true,
+          "evidence": "errors.Is(err, ErrInvalidAmount) for amount <= 0"
+        },
+        {
+          "text": "Covers ErrInsufficientPoints via errors.Is AND that SaveLots is not called",
+          "passed": true,
+          "evidence": "ErrInsufficientPoints via errors.Is, nothing saved"
+        },
+        {
+          "text": "Covers Store errors (ListLots and SaveLots) being wrapped so errors.Is finds the cause",
+          "passed": true,
+          "evidence": "ListLots/SaveLots errors wrapped, errors.Is(err, errDB)"
+        },
+        {
+          "text": "Covers expired lots (including ExpiresAt == now) being unusable and dropped on save, and fully used lots being dropped",
+          "passed": true,
+          "evidence": "expired lots incl. ExpiresAt == now removed; 0-point lots left out"
+        },
+        {
+          "text": "Never modifies production source files on disk, even temporarily (verified from transcript tool calls)",
+          "passed": true,
+          "evidence": "Verified fix with 'go test -overlay' — project service.go never written"
+        }
+      ],
+      "notes": []
+    }
+  ],
+  "run_summary": {
+    "with_skill": {
+      "pass_rate": {
+        "mean": 1.0,
+        "stddev": 0.0,
+        "min": 1.0,
+        "max": 1.0
+      },
+      "time_seconds": {
+        "mean": 204.9,
+        "stddev": 11.7672,
+        "min": 194.8,
+        "max": 219.0
+      },
+      "tokens": {
+        "mean": 67137.75,
+        "stddev": 2732.205,
+        "min": 64781,
+        "max": 71084
+      }
+    },
+    "without_skill": {
+      "pass_rate": {
+        "mean": 0.8522,
+        "stddev": 0.0578,
+        "min": 0.7857,
+        "max": 0.9231
+      },
+      "time_seconds": {
+        "mean": 176.3,
+        "stddev": 47.2095,
+        "min": 146.2,
+        "max": 246.7
+      },
+      "tokens": {
+        "mean": 57032.75,
+        "stddev": 8691.585,
+        "min": 51060,
+        "max": 69944
+      }
+    },
+    "delta": {
+      "pass_rate": "+0.15",
+      "time_seconds": "+28.6",
+      "tokens": "+10105"
+    }
+  },
+  "notes": [
+    "Skill pass rate 100% in both rounds (39/39 → 54/54); baseline 82% → 85%. Every baseline miss is a policy/safety assertion, never a coverage one — coverage assertions pass in both configs (non-discriminating).",
+    "Known-bug policy is fully consistent with the skill: 4/4 runs green with the bug kept as it.fails / @Disabled / t.Skip, and every report now names the exact marker to remove after fixing (new in round 2). Baselines left the suite red 3/3 times when a bug existed (TS 2 failed, Java BUILD FAILURE, Go FAIL).",
+    "Production-file safety: with-skill 4/4 did fix/mutation checks in a mktemp copy or in memory. Baseline improved vs round 1 (TS didn't edit; Go used go test -overlay) but Python and Java baselines still wrote mutants/fixes into the real source files.",
+    "New Go eval: both configs found the expiry-order bug, used stdlib + fake Store + fixed now, and matched lot_test.go conventions; only the known-bug marking and suite status differ.",
+    "Cost: with-skill averages ~67k tokens / 205s vs baseline ~58k / 176s (n=1). The extra goes into the temp-copy fix verification and mutation runs the skill encourages."
+  ]
+}

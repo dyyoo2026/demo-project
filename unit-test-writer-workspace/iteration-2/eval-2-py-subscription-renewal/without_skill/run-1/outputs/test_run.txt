@@ -1,0 +1,43 @@
+============================= test session starts ==============================
+platform darwin -- Python 3.9.6, pytest-8.4.2, pluggy-1.6.0 -- /Users/colldy/Desktop/Claude/unit-test-writer-workspace/iteration-2/eval-2-py-subscription-renewal/without_skill/run-1/project/.venv/bin/python3
+rootdir: /Users/colldy/Desktop/Claude/unit-test-writer-workspace/iteration-2/eval-2-py-subscription-renewal/without_skill/run-1/project
+configfile: pyproject.toml
+testpaths: tests
+collecting ... collected 34 items
+
+tests/test_models.py::test_is_due_when_expired PASSED                    [  2%]
+tests/test_models.py::test_is_not_due_before_expiry PASSED               [  5%]
+tests/test_models.py::test_extend_adds_days PASSED                       [  8%]
+tests/test_renewal.py::TestTargetSelection::test_queries_repository_once_with_current_utc_time PASSED [ 11%]
+tests/test_renewal.py::TestTargetSelection::test_no_due_subscriptions_returns_empty_report PASSED [ 14%]
+tests/test_renewal.py::TestTargetSelection::test_inactive_subscription_is_skipped_without_charging[CANCELLED] PASSED [ 17%]
+tests/test_renewal.py::TestTargetSelection::test_inactive_subscription_is_skipped_without_charging[SUSPENDED] PASSED [ 20%]
+tests/test_renewal.py::TestTargetSelection::test_not_yet_expired_subscription_returned_by_repo_is_skipped PASSED [ 23%]
+tests/test_renewal.py::TestTargetSelection::test_subscription_expiring_exactly_now_is_renewed PASSED [ 26%]
+tests/test_renewal.py::TestSuccessfulRenewal::test_charges_plan_price_with_idempotency_key PASSED [ 29%]
+tests/test_renewal.py::TestSuccessfulRenewal::test_extends_expiry_resets_failures_and_saves PASSED [ 32%]
+tests/test_renewal.py::TestSuccessfulRenewal::test_sends_success_notification_with_new_expiry PASSED [ 35%]
+tests/test_renewal.py::TestSuccessfulRenewal::test_next_cycle_uses_new_idempotency_key PASSED [ 38%]
+tests/test_renewal.py::TestSuccessfulRenewal::test_idempotency_key_uses_expiry_date_not_batch_date PASSED [ 41%]
+tests/test_renewal.py::TestPaymentDeclined::test_failure_below_limit_records_attempt_and_notifies_remaining[first-failure] PASSED [ 44%]
+tests/test_renewal.py::TestPaymentDeclined::test_failure_below_limit_records_attempt_and_notifies_remaining[second-failure] PASSED [ 47%]
+tests/test_renewal.py::TestPaymentDeclined::test_failure_persists_incremented_attempts PASSED [ 50%]
+tests/test_renewal.py::TestPaymentDeclined::test_failure_does_not_extend_expiry_or_send_success PASSED [ 52%]
+tests/test_renewal.py::TestPaymentDeclined::test_failure_reaching_limit_suspends_subscription[2] PASSED [ 55%]
+tests/test_renewal.py::TestPaymentDeclined::test_failure_reaching_limit_suspends_subscription[4] PASSED [ 58%]
+tests/test_renewal.py::TestPaymentDeclined::test_decline_does_not_stop_rest_of_batch PASSED [ 61%]
+tests/test_renewal.py::TestPaymentDeclined::test_suspension_does_not_stop_rest_of_batch PASSED [ 64%]
+tests/test_renewal.py::TestPaymentDeclined::test_three_consecutive_failed_batches_suspend_then_stop_charging PASSED [ 67%]
+tests/test_renewal.py::TestPaymentDeclined::test_success_after_failures_resets_counter PASSED [ 70%]
+tests/test_renewal.py::TestPaymentDeclined::test_payment_error_subclass_is_treated_as_decline PASSED [ 73%]
+tests/test_renewal.py::TestGatewayUnavailable::test_does_not_count_as_failed_attempt PASSED [ 76%]
+tests/test_renewal.py::TestGatewayUnavailable::test_does_not_suspend_subscription_on_its_last_attempt PASSED [ 79%]
+tests/test_renewal.py::TestGatewayUnavailable::test_aborts_remaining_subscriptions_in_batch PASSED [ 82%]
+tests/test_renewal.py::TestGatewayUnavailable::test_keeps_results_processed_before_abort PASSED [ 85%]
+tests/test_renewal.py::TestGatewayUnavailable::test_abort_on_first_subscription_returns_empty_report PASSED [ 88%]
+tests/test_renewal.py::TestGatewayUnavailable::test_logs_warning_with_subscription_id PASSED [ 91%]
+tests/test_renewal.py::TestGatewayUnavailable::test_next_batch_retries_with_same_idempotency_key PASSED [ 94%]
+tests/test_renewal.py::TestUnexpectedErrors::test_unknown_payment_exception_propagates_without_touching_subscription PASSED [ 97%]
+tests/test_renewal.py::test_mixed_batch_is_classified_in_order PASSED    [100%]
+
+============================== 34 passed in 0.03s ==============================

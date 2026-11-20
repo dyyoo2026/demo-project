@@ -1,0 +1,36 @@
+$ npx vitest run --reporter=verbose
+
+ RUN  v2.1.9 /Users/colldy/Desktop/Claude/unit-test-writer-workspace/iteration-1/eval-1-ts-order-total/with_skill/project
+
+ ✓ src/cart/pricing.test.ts > calculateOrderTotal > 수량 검증 > 수량이 0 인 항목이 있으면 RangeError 를 던진다
+ ✓ src/cart/pricing.test.ts > calculateOrderTotal > 수량 검증 > 수량이 -1 인 항목이 있으면 RangeError 를 던진다
+ ✓ src/cart/pricing.test.ts > calculateOrderTotal > 수량 검증 > 수량이 1.5 인 항목이 있으면 RangeError 를 던진다
+ ✓ src/cart/pricing.test.ts > calculateOrderTotal > 수량 검증 > 수량이 NaN 인 항목이 있으면 RangeError 를 던진다
+ ✓ src/cart/pricing.test.ts > calculateOrderTotal > 소계 > 단가 × 수량의 합을 소계로 계산하고, 할인이 없으면 소계 + 배송비가 총액이 된다
+ ✓ src/cart/pricing.test.ts > calculateOrderTotal > 빈 장바구니 > 멤버십·쿠폰과 관계없이 배송비를 포함한 모든 금액이 0원이다
+ ✓ src/cart/pricing.test.ts > calculateOrderTotal > 멤버십 할인 > 등급을 생략하면 BASIC 으로 취급해 할인하지 않는다
+ ✓ src/cart/pricing.test.ts > calculateOrderTotal > 멤버십 할인 > 'BASIC' 등급은 소계에서 할인하고 원 단위 미만은 절사한다
+ ✓ src/cart/pricing.test.ts > calculateOrderTotal > 멤버십 할인 > 'SILVER' 등급은 소계에서 할인하고 원 단위 미만은 절사한다
+ ✓ src/cart/pricing.test.ts > calculateOrderTotal > 멤버십 할인 > 'GOLD' 등급은 소계에서 할인하고 원 단위 미만은 절사한다
+ ✓ src/cart/pricing.test.ts > calculateOrderTotal > 쿠폰 > PERCENT 쿠폰은 멤버십 할인 후 금액에 적용하고 원 단위 미만은 절사한다
+ ✓ src/cart/pricing.test.ts > calculateOrderTotal > 쿠폰 > PERCENT 쿠폰 할인액이 정수로 떨어지면 그대로 적용한다 (BUG: 11,000원 × 35% 가 3,850 이 아니라 부동소수점 오차로 3,849 로 계산됨)
+ ✓ src/cart/pricing.test.ts > calculateOrderTotal > 쿠폰 > FIXED 쿠폰은 쿠폰 금액만큼 차감한다
+ ✓ src/cart/pricing.test.ts > calculateOrderTotal > 쿠폰 > FIXED 쿠폰 금액이 할인 후 금액보다 크면 할인 후 금액까지만 차감한다
+ ✓ src/cart/pricing.test.ts > calculateOrderTotal > 쿠폰 > 멤버십 할인 후 금액이 minOrderAmount 와 정확히 같으면 쿠폰을 적용한다
+ ✓ src/cart/pricing.test.ts > calculateOrderTotal > 쿠폰 > 소계가 minOrderAmount 이상이어도 멤버십 할인 후 금액이 미달이면 쿠폰을 적용하지 않는다
+ ✓ src/cart/pricing.test.ts > calculateOrderTotal > 배송비 > 할인 후 상품 금액이 50,000원을 넘으면 무료배송이다
+ ✓ src/cart/pricing.test.ts > calculateOrderTotal > 배송비 > 할인 후 상품 금액이 50,000원 미만이면 배송비 3,000원을 더한다
+ ✓ src/cart/pricing.test.ts > calculateOrderTotal > 배송비 > 할인 후 상품 금액이 정확히 50,000원이면 무료배송이다 (BUG: 문서는 "50,000원 이상" 이지만 코드가 > 로 비교해 배송비 3,000원이 붙음)
+ ✓ src/cart/pricing.test.ts > calculateOrderTotal > 배송비 > 무료배송 기준은 소계가 아니라 멤버십·쿠폰 할인 후 금액으로 판단한다
+ ✓ src/cart/format.test.ts > formatKRW > 천 단위마다 쉼표를 찍는다
+ ✓ src/cart/format.test.ts > formatKRW > 0원은 "0원"으로 표시한다
+
+ Test Files  2 passed (2)
+      Tests  22 passed (22)
+   Start at  11:29:11
+   Duration  260ms (transform 43ms, setup 0ms, collect 56ms, tests 21ms, environment 0ms, prepare 86ms)
+
+exit code: 0
+
+$ npx tsc --noEmit
+exit code: 0

@@ -1,0 +1,88 @@
+{
+  "expectations": [
+    {
+      "text": "Test file is service_test.go next to service.go, in package points (same as lot_test.go)",
+      "passed": true,
+      "evidence": "service_test.go, package points"
+    },
+    {
+      "text": "go.mod is unchanged (no new test dependencies; stdlib testing only)",
+      "passed": true,
+      "evidence": "go.mod UNCHANGED, only \"testing\" + stdlib imports"
+    },
+    {
+      "text": "Uses table-driven subtests with t.Run and got/want style messages, matching lot_test.go",
+      "passed": true,
+      "evidence": "t.Run table tests, 'Redeem() error = %v, want ...' messages"
+    },
+    {
+      "text": "Final go test run passes (0 failures; known bug skipped)",
+      "passed": true,
+      "evidence": "Independent go test: PASS (1 SKIP)"
+    },
+    {
+      "text": "Production code (service.go, lot.go) is unchanged",
+      "passed": true,
+      "evidence": "service.go, lot.go UNCHANGED"
+    },
+    {
+      "text": "A test expects the soonest-expiring lot to be consumed first even when it was earned later (does not assert the buggy EarnedAt order)",
+      "passed": true,
+      "evidence": "TestRedeem_DeductsSoonestExpiringLotFirst: want map[soon:30]"
+    },
+    {
+      "text": "The expiry-order bug is reported to the user with expected vs actual and location",
+      "passed": true,
+      "evidence": "final_message: service.go:62-64 sorts by EarnedAt only; want map[soon:30] got map[old:30]"
+    },
+    {
+      "text": "The expiry-order bug test is kept and marked with t.Skip(\"BUG: ...\"), not deleted or weakened",
+      "passed": true,
+      "evidence": "t.Skip(\"BUG: 만료 임박 순이 아니라 적립 순(EarnedAt)으로 차감한다 — want ... got ...\"); report says delete that t.Skip line after fix"
+    },
+    {
+      "text": "Time is controlled by setting the Service's now field (no dependence on the real clock)",
+      "passed": true,
+      "evidence": "svc.now = func() time.Time { return testNow }"
+    },
+    {
+      "text": "Uses a hand-written fake Store that records what SaveLots received",
+      "passed": true,
+      "evidence": "type fakeStore records SaveLots input"
+    },
+    {
+      "text": "Covers ErrInvalidAmount for zero and negative amounts",
+      "passed": true,
+      "evidence": "table test → errors.Is(err, ErrInvalidAmount) for 0 and negative"
+    },
+    {
+      "text": "Covers ErrInsufficientPoints via errors.Is AND that SaveLots is not called",
+      "passed": true,
+      "evidence": "errors.Is(err, ErrInsufficientPoints) + no save"
+    },
+    {
+      "text": "Covers Store errors (ListLots and SaveLots) being wrapped so errors.Is finds the cause",
+      "passed": true,
+      "evidence": "ListLotsError / SaveLotsError: errors.Is(err, errDB)"
+    },
+    {
+      "text": "Covers expired lots (including ExpiresAt == now) being unusable and dropped on save, and fully used lots being dropped",
+      "passed": true,
+      "evidence": "expired incl. ExpiresAt == now and Amount 0 lots dropped from saved lots"
+    },
+    {
+      "text": "Never modifies production source files on disk, even temporarily (verified from transcript tool calls)",
+      "passed": true,
+      "evidence": "Fix + 11 mutants run in mktemp -d copy via perl -pi on the copy"
+    }
+  ],
+  "summary": {
+    "passed": 15,
+    "failed": 0,
+    "total": 15,
+    "pass_rate": 1.0
+  },
+  "execution_metrics": {
+    "total_tool_calls": 9
+  }
+}

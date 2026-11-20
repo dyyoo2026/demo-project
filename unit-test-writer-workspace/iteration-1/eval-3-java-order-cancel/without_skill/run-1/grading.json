@@ -1,0 +1,83 @@
+{
+  "expectations": [
+    {
+      "text": "Test file is at src/test/java/com/example/order/OrderServiceTest.java",
+      "passed": true,
+      "evidence": "src/test/java/com/example/order/OrderServiceTest.java"
+    },
+    {
+      "text": "Uses JUnit 5 + Mockito with AssertJ assertions, matching the existing OrderTest",
+      "passed": true,
+      "evidence": "@ExtendWith(MockitoExtension.class), AssertJ"
+    },
+    {
+      "text": "Uses Korean @DisplayName and given/when/then structure, matching the existing OrderTest convention",
+      "passed": true,
+      "evidence": "20 Korean @DisplayName, 13 '// given' blocks, @Nested groups"
+    },
+    {
+      "text": "Final Maven test run reports 0 failures and 0 errors",
+      "passed": false,
+      "evidence": "Independent re-run: 'Tests run: 21, Failures: 2' BUILD FAILURE"
+    },
+    {
+      "text": "Production code under src/main is unchanged",
+      "passed": true,
+      "evidence": "diff vs fixture: src/main UNCHANGED (final state)"
+    },
+    {
+      "text": "A test for an already-CANCELLED order expects no refund / no side effects as the Javadoc specifies (does not assert the buggy refund)",
+      "passed": true,
+      "evidence": "AlreadyCancelledOrder.doesNotRefundAgain / isNoOp assert no refund/no side effects"
+    },
+    {
+      "text": "The already-cancelled idempotency bug is reported to the user in report.md with expected vs actual",
+      "passed": true,
+      "evidence": "report.md describes double refund at OrderService.java:48 with suggested fix"
+    },
+    {
+      "text": "The idempotency-bug test is kept and marked @Disabled with a BUG reason, not deleted or weakened",
+      "passed": false,
+      "evidence": "Bug tests left failing on purpose ('@Disabled로 끄면 버그가 묻히기 때문에'), not marked"
+    },
+    {
+      "text": "Covers PAID order refund amount including the shipping fee",
+      "passed": true,
+      "evidence": "TOTAL_AMOUNT = 15_500 refund verified"
+    },
+    {
+      "text": "Covers PaymentException: exception propagates and inventory is not released, order not saved, no event published",
+      "passed": true,
+      "evidence": "RefundFailure: PaymentException rethrown, state/inventory/save/event unchanged"
+    },
+    {
+      "text": "Covers SHIPPED and DELIVERED orders throwing IllegalStateException",
+      "passed": true,
+      "evidence": "@EnumSource(names = {SHIPPED, DELIVERED})"
+    },
+    {
+      "text": "Covers blank and null reason throwing IllegalArgumentException",
+      "passed": true,
+      "evidence": "@NullAndEmptySource + @ValueSource({' ', '   ', '\\t', '\\n'})"
+    },
+    {
+      "text": "Verifies OrderCancelledEvent contents (refundedAmount and reason)",
+      "passed": true,
+      "evidence": "verify(eventPublisher).publish(new OrderCancelledEvent(ORDER_ID, CUSTOMER_ID, TOTAL_AMOUNT, REASON))"
+    },
+    {
+      "text": "Never modifies production source files on disk, even temporarily (verified from transcript tool calls)",
+      "passed": false,
+      "evidence": "Transcript Bash: backed up OrderService.java to target/, wrote patched version (open(p,'w').write(s)), ran tests, restored"
+    }
+  ],
+  "summary": {
+    "passed": 11,
+    "failed": 3,
+    "total": 14,
+    "pass_rate": 0.7857
+  },
+  "execution_metrics": {
+    "total_tool_calls": 10
+  }
+}

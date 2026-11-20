@@ -1,0 +1,38 @@
+$ .venv/bin/python -m pytest -vv
+============================= test session starts ==============================
+platform darwin -- Python 3.9.6, pytest-8.4.2, pluggy-1.6.0 -- /Users/colldy/Desktop/Claude/unit-test-writer-workspace/iteration-1/eval-2-py-subscription-renewal/with_skill/project/.venv/bin/python
+cachedir: .pytest_cache
+rootdir: /Users/colldy/Desktop/Claude/unit-test-writer-workspace/iteration-1/eval-2-py-subscription-renewal/with_skill/project
+configfile: pyproject.toml
+testpaths: tests
+collecting ... collected 27 items
+
+tests/test_models.py::test_is_due_when_expired PASSED                    [  3%]
+tests/test_models.py::test_is_not_due_before_expiry PASSED               [  7%]
+tests/test_models.py::test_extend_adds_days PASSED                       [ 11%]
+tests/test_renewal.py::test_returns_empty_report_when_nothing_is_due PASSED [ 14%]
+tests/test_renewal.py::test_queries_repository_with_current_utc_time PASSED [ 18%]
+tests/test_renewal.py::test_skips_inactive_subscription_without_charging[cancelled] PASSED [ 22%]
+tests/test_renewal.py::test_skips_inactive_subscription_without_charging[suspended] PASSED [ 25%]
+tests/test_renewal.py::test_skips_subscription_not_yet_due_even_if_repository_returns_it PASSED [ 29%]
+tests/test_renewal.py::test_renews_subscription_expiring_exactly_now PASSED [ 33%]
+tests/test_renewal.py::test_renews_due_subscription_and_extends_expiry_by_30_days PASSED [ 37%]
+tests/test_renewal.py::test_charges_plan_price_with_idempotency_key_from_expiry_date PASSED [ 40%]
+tests/test_renewal.py::test_success_saves_subscription_and_records_transaction_in_history PASSED [ 44%]
+tests/test_renewal.py::test_success_sends_renewal_notification_with_new_expiry PASSED [ 48%]
+tests/test_renewal.py::test_success_resets_previous_failed_attempts PASSED [ 51%]
+tests/test_renewal.py::test_payment_error_below_limit_records_failure_and_keeps_subscription_active[first_failure] PASSED [ 55%]
+tests/test_renewal.py::test_payment_error_below_limit_records_failure_and_keeps_subscription_active[second_failure] PASSED [ 59%]
+tests/test_renewal.py::test_payment_error_below_limit_notifies_remaining_attempts[first_failure] PASSED [ 62%]
+tests/test_renewal.py::test_payment_error_below_limit_notifies_remaining_attempts[second_failure] PASSED [ 66%]
+tests/test_renewal.py::test_third_payment_error_suspends_subscription PASSED [ 70%]
+tests/test_renewal.py::test_third_payment_error_sends_suspension_notice_instead_of_failure_notice PASSED [ 74%]
+tests/test_renewal.py::test_payment_error_does_not_stop_processing_rest_of_batch PASSED [ 77%]
+tests/test_renewal.py::test_three_consecutive_failed_batches_suspend_then_skip_subscription PASSED [ 81%]
+tests/test_renewal.py::test_retry_after_payment_error_reuses_key_and_recovers_on_success PASSED [ 85%]
+tests/test_renewal.py::test_gateway_unavailable_leaves_subscription_untouched PASSED [ 88%]
+tests/test_renewal.py::test_gateway_unavailable_aborts_rest_of_batch_but_keeps_earlier_results PASSED [ 92%]
+tests/test_renewal.py::test_gateway_unavailable_logs_warning_with_subscription_id PASSED [ 96%]
+tests/test_renewal.py::test_classifies_each_subscription_of_mixed_batch_in_order PASSED [100%]
+
+============================== 27 passed in 0.09s ==============================

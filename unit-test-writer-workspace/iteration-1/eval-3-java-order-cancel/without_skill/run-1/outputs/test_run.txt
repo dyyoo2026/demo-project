@@ -1,0 +1,120 @@
+[INFO] Scanning for projects...
+[INFO] 
+[INFO] ---------------------< com.example:order-service >----------------------
+[INFO] Building order-service 0.1.0
+[INFO]   from pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ order-service ---
+[INFO] skip non existing resourceDirectory /Users/colldy/Desktop/Claude/unit-test-writer-workspace/iteration-1/eval-3-java-order-cancel/without_skill/project/src/main/resources
+[INFO] 
+[INFO] --- compiler:3.13.0:compile (default-compile) @ order-service ---
+[INFO] Recompiling the module because of changed source code.
+[INFO] Compiling 11 source files with javac [debug release 17] to target/classes
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ order-service ---
+[INFO] skip non existing resourceDirectory /Users/colldy/Desktop/Claude/unit-test-writer-workspace/iteration-1/eval-3-java-order-cancel/without_skill/project/src/test/resources
+[INFO] 
+[INFO] --- compiler:3.13.0:testCompile (default-testCompile) @ order-service ---
+[INFO] Recompiling the module because of changed dependency.
+[INFO] Compiling 2 source files with javac [debug release 17] to target/test-classes
+[INFO] 
+[INFO] --- surefire:3.5.2:test (default-test) @ order-service ---
+[INFO] Using auto detected provider org.apache.maven.surefire.junitplatform.JUnitPlatformProvider
+[INFO] 
+[INFO] -------------------------------------------------------
+[INFO]  T E S T S
+[INFO] -------------------------------------------------------
+[INFO] Running com.example.order.OrderServiceTest
+[INFO] Running com.example.order.OrderServiceTest$BlankReason
+OpenJDK 64-Bit Server VM warning: Sharing is only supported for boot loader classes because bootstrap classpath has been appended
+[INFO] Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.566 s -- in com.example.order.OrderServiceTest$BlankReason
+[INFO] Running com.example.order.OrderServiceTest$OrderNotFound
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.015 s -- in com.example.order.OrderServiceTest$OrderNotFound
+[INFO] Running com.example.order.OrderServiceTest$RefundFailure
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.007 s -- in com.example.order.OrderServiceTest$RefundFailure
+[INFO] Running com.example.order.OrderServiceTest$ShippedOrder
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.008 s -- in com.example.order.OrderServiceTest$ShippedOrder
+[INFO] Running com.example.order.OrderServiceTest$AlreadyCancelledOrder
+[ERROR] Tests run: 2, Failures: 2, Errors: 0, Skipped: 0, Time elapsed: 0.013 s <<< FAILURE! -- in com.example.order.OrderServiceTest$AlreadyCancelledOrder
+[ERROR] com.example.order.OrderServiceTest$AlreadyCancelledOrder.isNoOp -- Time elapsed: 0.009 s <<< FAILURE!
+org.mockito.exceptions.verification.NoInteractionsWanted: 
+
+No interactions wanted here:
+-> at com.example.order.OrderServiceTest$AlreadyCancelledOrder.isNoOp(OrderServiceTest.java:224)
+But found these interactions on mock 'inventoryClient':
+-> at com.example.order.OrderService.cancelOrder(OrderService.java:54)
+-> at com.example.order.OrderService.cancelOrder(OrderService.java:54)
+***
+For your reference, here is the list of all invocations ([?] - means unverified).
+1. [?]-> at com.example.order.OrderService.cancelOrder(OrderService.java:54)
+2. [?]-> at com.example.order.OrderService.cancelOrder(OrderService.java:54)
+
+	at com.example.order.OrderServiceTest$AlreadyCancelledOrder.isNoOp(OrderServiceTest.java:224)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:569)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+
+[ERROR] com.example.order.OrderServiceTest$AlreadyCancelledOrder.doesNotRefundAgain -- Time elapsed: 0.003 s <<< FAILURE!
+org.mockito.exceptions.verification.NoInteractionsWanted: 
+
+No interactions wanted here:
+-> at com.example.order.OrderServiceTest$AlreadyCancelledOrder.doesNotRefundAgain(OrderServiceTest.java:211)
+But found these interactions on mock 'paymentGateway':
+-> at com.example.order.OrderService.cancelOrder(OrderService.java:50)
+Actually, above is the only interaction with this mock.
+	at com.example.order.OrderServiceTest$AlreadyCancelledOrder.doesNotRefundAgain(OrderServiceTest.java:211)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:569)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+
+[INFO] Running com.example.order.OrderServiceTest$PendingPaymentOrder
+[INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.013 s -- in com.example.order.OrderServiceTest$PendingPaymentOrder
+[INFO] Running com.example.order.OrderServiceTest$PaidOrder
+[INFO] Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.013 s -- in com.example.order.OrderServiceTest$PaidOrder
+[INFO] Tests run: 0, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.647 s -- in com.example.order.OrderServiceTest
+[INFO] Running com.example.order.OrderTest
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0 s -- in com.example.order.OrderTest
+[INFO] 
+[INFO] Results:
+[INFO] 
+[ERROR] Failures: 
+[ERROR]   OrderServiceTest$AlreadyCancelledOrder.doesNotRefundAgain:211 
+No interactions wanted here:
+-> at com.example.order.OrderServiceTest$AlreadyCancelledOrder.doesNotRefundAgain(OrderServiceTest.java:211)
+But found these interactions on mock 'paymentGateway':
+-> at com.example.order.OrderService.cancelOrder(OrderService.java:50)
+Actually, above is the only interaction with this mock.
+[ERROR]   OrderServiceTest$AlreadyCancelledOrder.isNoOp:224 
+No interactions wanted here:
+-> at com.example.order.OrderServiceTest$AlreadyCancelledOrder.isNoOp(OrderServiceTest.java:224)
+But found these interactions on mock 'inventoryClient':
+-> at com.example.order.OrderService.cancelOrder(OrderService.java:54)
+-> at com.example.order.OrderService.cancelOrder(OrderService.java:54)
+***
+For your reference, here is the list of all invocations ([?] - means unverified).
+1. [?]-> at com.example.order.OrderService.cancelOrder(OrderService.java:54)
+2. [?]-> at com.example.order.OrderService.cancelOrder(OrderService.java:54)
+
+[INFO] 
+[ERROR] Tests run: 21, Failures: 2, Errors: 0, Skipped: 0
+[INFO] 
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD FAILURE
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  1.740 s
+[INFO] Finished at: 2026-11-20T11:29:08+09:00
+[INFO] ------------------------------------------------------------------------
+[ERROR] Failed to execute goal org.apache.maven.plugins:maven-surefire-plugin:3.5.2:test (default-test) on project order-service: There are test failures.
+[ERROR] 
+[ERROR] See /Users/colldy/Desktop/Claude/unit-test-writer-workspace/iteration-1/eval-3-java-order-cancel/without_skill/project/target/surefire-reports for the individual test results.
+[ERROR] See dump files (if any exist) [date].dump, [date]-jvmRun[N].dump and [date].dumpstream.
+[ERROR] -> [Help 1]
+[ERROR] 
+[ERROR] To see the full stack trace of the errors, re-run Maven with the -e switch.
+[ERROR] Re-run Maven using the -X switch to enable full debug logging.
+[ERROR] 
+[ERROR] For more information about the errors and possible solutions, please read the following articles:
+[ERROR] [Help 1] http://cwiki.apache.org/confluence/display/MAVEN/MojoFailureException

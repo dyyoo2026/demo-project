@@ -1,0 +1,47 @@
+$ .venv/bin/pytest -vv
+============================= test session starts ==============================
+platform darwin -- Python 3.9.6, pytest-8.4.2, pluggy-1.6.0 -- /Users/colldy/Desktop/Claude/unit-test-writer-workspace/iteration-1/eval-2-py-subscription-renewal/without_skill/project/.venv/bin/python3
+rootdir: /Users/colldy/Desktop/Claude/unit-test-writer-workspace/iteration-1/eval-2-py-subscription-renewal/without_skill/project
+configfile: pyproject.toml
+testpaths: tests
+collecting ... collected 37 items
+
+tests/test_models.py::test_is_due_when_expired PASSED                    [  2%]
+tests/test_models.py::test_is_not_due_before_expiry PASSED               [  5%]
+tests/test_models.py::test_extend_adds_days PASSED                       [  8%]
+tests/test_renewal.py::TestSelection::test_queries_repository_with_current_utc_time PASSED [ 10%]
+tests/test_renewal.py::TestSelection::test_empty_batch_returns_empty_report_and_touches_nothing PASSED [ 13%]
+tests/test_renewal.py::TestSelection::test_skips_inactive_subscription_without_charging[CANCELLED] PASSED [ 16%]
+tests/test_renewal.py::TestSelection::test_skips_inactive_subscription_without_charging[SUSPENDED] PASSED [ 18%]
+tests/test_renewal.py::TestSelection::test_skips_subscription_not_yet_due_even_if_repository_returns_it PASSED [ 21%]
+tests/test_renewal.py::TestSelection::test_charges_subscription_expiring_exactly_now PASSED [ 24%]
+tests/test_renewal.py::TestSuccessfulRenewal::test_charges_plan_price_to_user_with_idempotency_key PASSED [ 27%]
+tests/test_renewal.py::TestSuccessfulRenewal::test_extends_expiry_by_30_days_and_resets_failed_attempts PASSED [ 29%]
+tests/test_renewal.py::TestSuccessfulRenewal::test_sends_success_notification_with_new_expiry PASSED [ 32%]
+tests/test_renewal.py::TestSuccessfulRenewal::test_saves_before_notifying PASSED [ 35%]
+tests/test_renewal.py::TestIdempotencyKey::test_key_uses_expiry_date_only_ignoring_time_of_day PASSED [ 37%]
+tests/test_renewal.py::TestIdempotencyKey::test_retry_after_payment_error_reuses_same_key_in_same_period PASSED [ 40%]
+tests/test_renewal.py::TestIdempotencyKey::test_retry_after_gateway_unavailable_reuses_same_key PASSED [ 43%]
+tests/test_renewal.py::TestIdempotencyKey::test_next_period_uses_new_key_after_success PASSED [ 45%]
+tests/test_renewal.py::TestIdempotencyKey::test_same_expiry_date_on_different_subscriptions_gives_different_keys PASSED [ 48%]
+tests/test_renewal.py::TestPaymentDeclined::test_failure_below_limit_increments_counter_and_notifies_remaining_attempts[first-failure] PASSED [ 51%]
+tests/test_renewal.py::TestPaymentDeclined::test_failure_below_limit_increments_counter_and_notifies_remaining_attempts[second-failure] PASSED [ 54%]
+tests/test_renewal.py::TestPaymentDeclined::test_third_failure_suspends_subscription PASSED [ 56%]
+tests/test_renewal.py::TestPaymentDeclined::test_failure_with_counter_already_over_limit_still_suspends PASSED [ 59%]
+tests/test_renewal.py::TestPaymentDeclined::test_saves_before_notifying_on_failure[failed] PASSED [ 62%]
+tests/test_renewal.py::TestPaymentDeclined::test_saves_before_notifying_on_failure[suspended] PASSED [ 64%]
+tests/test_renewal.py::TestPaymentDeclined::test_failure_does_not_stop_rest_of_batch PASSED [ 67%]
+tests/test_renewal.py::TestPaymentDeclined::test_three_consecutive_failed_batches_suspend_and_then_skip PASSED [ 70%]
+tests/test_renewal.py::TestPaymentDeclined::test_success_after_failures_resets_counter PASSED [ 72%]
+tests/test_renewal.py::TestGatewayUnavailable::test_does_not_count_as_failure_and_leaves_subscription_untouched[0] PASSED [ 75%]
+tests/test_renewal.py::TestGatewayUnavailable::test_does_not_count_as_failure_and_leaves_subscription_untouched[2] PASSED [ 78%]
+tests/test_renewal.py::TestGatewayUnavailable::test_aborts_remaining_subscriptions_in_batch PASSED [ 81%]
+tests/test_renewal.py::TestGatewayUnavailable::test_keeps_results_processed_before_abort PASSED [ 83%]
+tests/test_renewal.py::TestGatewayUnavailable::test_logs_warning_with_subscription_id PASSED [ 86%]
+tests/test_renewal.py::TestGatewayUnavailable::test_next_batch_processes_subscriptions_that_were_aborted PASSED [ 89%]
+tests/test_renewal.py::TestReport::test_classifies_mixed_batch_preserving_order PASSED [ 91%]
+tests/test_renewal.py::TestCurrentBehaviorOnUnexpectedErrors::test_unexpected_charge_exception_propagates_without_counting_failure PASSED [ 94%]
+tests/test_renewal.py::TestCurrentBehaviorOnUnexpectedErrors::test_notifier_failure_after_charge_propagates_but_renewal_is_already_saved PASSED [ 97%]
+tests/test_renewal.py::TestCurrentBehaviorOnUnexpectedErrors::test_long_overdue_subscription_is_extended_from_old_expiry_not_from_now PASSED [100%]
+
+============================== 37 passed in 0.04s ==============================

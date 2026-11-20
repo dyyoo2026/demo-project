@@ -1,0 +1,29 @@
+# macOS
+.DS_Store
+
+# 의존성과 빌드 산출물 (fixtures와 iteration-*/run-*/project 사본 모두)
+node_modules/
+.venv/
+venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+target/
+dist/
+build/
+coverage/
+*.class
+
+# 비밀 값과 로컬 전용 설정 (공개 저장소예요)
+.env
+.env.*
+*.pem
+*.key
+.claude/settings.local.json
+
+# 로그와 에디터
+*.log
+.idea/
+.vscode/

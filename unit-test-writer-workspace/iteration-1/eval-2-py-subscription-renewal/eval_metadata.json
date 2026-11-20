@@ -1,0 +1,20 @@
+{
+  "eval_id": 2,
+  "eval_name": "eval-2-py-subscription-renewal",
+  "prompt": "billing/renewal.py SubscriptionRenewalService 테스트 코드 짜줘. 결제 실패 쪽 케이스도 꼼꼼하게 봐줘",
+  "assertions": [
+    "Test file is placed in tests/ with a test_*.py name",
+    "Reuses the make_subscription fixture from tests/conftest.py",
+    "Current time is controlled deterministically (no test depends on the real wall clock)",
+    "Final pytest run reports all tests passing (0 failed)",
+    "Production code under billing/ is unchanged",
+    "Covers PaymentError below the limit: failed_attempts incremented, saved, 'renewal_failed' sent with correct remaining_attempts",
+    "Covers the 3rd PaymentError: status becomes SUSPENDED and 'subscription_suspended' is sent",
+    "Covers PaymentGatewayUnavailable: failed_attempts not incremented AND later subscriptions in the batch are not charged",
+    "Covers success: expires_at extended by 30 days, failed_attempts reset to 0, 'renewal_success' sent",
+    "Asserts the idempotency_key format '{subscription id}:{YYYYMMDD of expires_at}'",
+    "Covers CANCELLED and SUSPENDED subscriptions being skipped without charging",
+    "Does not falsely claim a bug in renewal.py (report contains no false-positive bug claims)",
+    "Never modifies production source files on disk, even temporarily (verified from transcript tool calls)"
+  ]
+}

@@ -1,0 +1,73 @@
+{
+  "expectations": [
+    {
+      "text": "New test file is co-located at src/cart/pricing.test.ts, matching the existing format.test.ts convention",
+      "passed": true,
+      "evidence": "src/cart/pricing.test.ts next to format.test.ts"
+    },
+    {
+      "text": "Test descriptions (describe/it) are written in Korean, matching the existing test file",
+      "passed": true,
+      "evidence": "Korean describe/it names"
+    },
+    {
+      "text": "Final vitest run reports 0 failed tests (all pass, or the known bug is intentionally marked with it.fails/skip)",
+      "passed": false,
+      "evidence": "Independent re-run: Tests 2 failed | 32 passed (34)"
+    },
+    {
+      "text": "Production code src/cart/pricing.ts is unchanged",
+      "passed": true,
+      "evidence": "pricing.ts UNCHANGED"
+    },
+    {
+      "text": "A test checks the free-shipping boundary at exactly 50,000 and expects shippingFee 0 as the JSDoc specifies (does not assert the buggy 3,000)",
+      "passed": true,
+      "evidence": "'할인 후 상품 금액이 정확히 50,000원이면 무료배송이다' expects 0 shipping"
+    },
+    {
+      "text": "The free-shipping boundary bug (> vs >=) is reported to the user in report.md with expected vs actual",
+      "passed": true,
+      "evidence": "report: '>' vs '>=' at line 53 with fix"
+    },
+    {
+      "text": "The boundary-bug test is kept and marked as a known failure (it.fails / test.failing / skip with BUG reason), not deleted or weakened",
+      "passed": false,
+      "evidence": "Left as plain failing it(); 'If the user wants a green suite, they can be switched to it.fails'"
+    },
+    {
+      "text": "Covers RangeError for invalid quantity (0 or negative) and non-integer quantity",
+      "passed": true,
+      "evidence": "0/negative/decimal/NaN/Infinity → RangeError"
+    },
+    {
+      "text": "Covers coupon minOrderAmount threshold (applies at the threshold, not below it)",
+      "passed": true,
+      "evidence": "describe('최소 주문 금액(minOrderAmount)') exact & 1원 below"
+    },
+    {
+      "text": "Covers FIXED coupon being capped so the merchandise amount cannot go below 0",
+      "passed": true,
+      "evidence": "FIXED 25,000 on SILVER 20,000 → capped"
+    },
+    {
+      "text": "tsc --noEmit type check passes with the new test file included",
+      "passed": true,
+      "evidence": "tsc exit 0"
+    },
+    {
+      "text": "Never modifies production source files on disk, even temporarily (verified from transcript tool calls)",
+      "passed": true,
+      "evidence": "No Edit/Write/Bash writes to pricing.ts found in transcript this round"
+    }
+  ],
+  "summary": {
+    "passed": 10,
+    "failed": 2,
+    "total": 12,
+    "pass_rate": 0.8333
+  },
+  "execution_metrics": {
+    "total_tool_calls": 10
+  }
+}

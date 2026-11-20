@@ -1,0 +1,88 @@
+{
+  "expectations": [
+    {
+      "text": "Test file is service_test.go next to service.go, in package points (same as lot_test.go)",
+      "passed": true,
+      "evidence": "service_test.go, package points"
+    },
+    {
+      "text": "go.mod is unchanged (no new test dependencies; stdlib testing only)",
+      "passed": true,
+      "evidence": "go.mod UNCHANGED, stdlib only"
+    },
+    {
+      "text": "Uses table-driven subtests with t.Run and got/want style messages, matching lot_test.go",
+      "passed": true,
+      "evidence": "t.Run table tests, got/want messages"
+    },
+    {
+      "text": "Final go test run passes (0 failures; known bug skipped)",
+      "passed": false,
+      "evidence": "Independent go test: --- FAIL: TestRedeem_Success, exit FAIL"
+    },
+    {
+      "text": "Production code (service.go, lot.go) is unchanged",
+      "passed": true,
+      "evidence": "service.go, lot.go UNCHANGED"
+    },
+    {
+      "text": "A test expects the soonest-expiring lot to be consumed first even when it was earned later (does not assert the buggy EarnedAt order)",
+      "passed": true,
+      "evidence": "'만료가_가장_임박한_lot_부터_차감' want map[y:50]"
+    },
+    {
+      "text": "The expiry-order bug is reported to the user with expected vs actual and location",
+      "passed": true,
+      "evidence": "final_message: lines 62-64 sort by EarnedAt only, got vs want, fix code"
+    },
+    {
+      "text": "The expiry-order bug test is kept and marked with t.Skip(\"BUG: ...\"), not deleted or weakened",
+      "passed": false,
+      "evidence": "Bug cases left failing in TestRedeem_Success, no t.Skip"
+    },
+    {
+      "text": "Time is controlled by setting the Service's now field (no dependence on the real clock)",
+      "passed": true,
+      "evidence": "s.now = func() time.Time { return testNow }"
+    },
+    {
+      "text": "Uses a hand-written fake Store that records what SaveLots received",
+      "passed": true,
+      "evidence": "type fakeStore records SaveLots"
+    },
+    {
+      "text": "Covers ErrInvalidAmount for zero and negative amounts",
+      "passed": true,
+      "evidence": "errors.Is(err, ErrInvalidAmount) for amount <= 0"
+    },
+    {
+      "text": "Covers ErrInsufficientPoints via errors.Is AND that SaveLots is not called",
+      "passed": true,
+      "evidence": "ErrInsufficientPoints via errors.Is, nothing saved"
+    },
+    {
+      "text": "Covers Store errors (ListLots and SaveLots) being wrapped so errors.Is finds the cause",
+      "passed": true,
+      "evidence": "ListLots/SaveLots errors wrapped, errors.Is(err, errDB)"
+    },
+    {
+      "text": "Covers expired lots (including ExpiresAt == now) being unusable and dropped on save, and fully used lots being dropped",
+      "passed": true,
+      "evidence": "expired lots incl. ExpiresAt == now removed; 0-point lots left out"
+    },
+    {
+      "text": "Never modifies production source files on disk, even temporarily (verified from transcript tool calls)",
+      "passed": true,
+      "evidence": "Verified fix with 'go test -overlay' — project service.go never written"
+    }
+  ],
+  "summary": {
+    "passed": 13,
+    "failed": 2,
+    "total": 15,
+    "pass_rate": 0.8667
+  },
+  "execution_metrics": {
+    "total_tool_calls": 8
+  }
+}

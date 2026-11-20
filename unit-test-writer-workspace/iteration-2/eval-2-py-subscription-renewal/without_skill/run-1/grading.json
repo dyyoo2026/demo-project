@@ -1,0 +1,78 @@
+{
+  "expectations": [
+    {
+      "text": "Test file is placed in tests/ with a test_*.py name",
+      "passed": true,
+      "evidence": "tests/test_renewal.py"
+    },
+    {
+      "text": "Reuses the make_subscription fixture from tests/conftest.py",
+      "passed": true,
+      "evidence": "make_subscription used 70x"
+    },
+    {
+      "text": "Current time is controlled deterministically (no test depends on the real wall clock)",
+      "passed": true,
+      "evidence": "monkeypatch.setattr(renewal, 'datetime', FrozenDatetime)"
+    },
+    {
+      "text": "Final pytest run reports all tests passing (0 failed)",
+      "passed": true,
+      "evidence": "Independent re-run: 34 passed"
+    },
+    {
+      "text": "Production code under billing/ is unchanged",
+      "passed": true,
+      "evidence": "billing/ UNCHANGED (final state)"
+    },
+    {
+      "text": "Covers PaymentError below the limit: failed_attempts incremented, saved, 'renewal_failed' sent with correct remaining_attempts",
+      "passed": true,
+      "evidence": "first/second failure: count+1, renewal_failed 2 then 1"
+    },
+    {
+      "text": "Covers the 3rd PaymentError: status becomes SUSPENDED and 'subscription_suspended' is sent",
+      "passed": true,
+      "evidence": "third failure SUSPENDED, notifier.sent == [subscription_suspended]"
+    },
+    {
+      "text": "Covers PaymentGatewayUnavailable: failed_attempts not incremented AND later subscriptions in the batch are not charged",
+      "passed": true,
+      "evidence": "TestGatewayUnavailable: nothing counted/saved; batch stops"
+    },
+    {
+      "text": "Covers success: expires_at extended by 30 days, failed_attempts reset to 0, 'renewal_success' sent",
+      "passed": true,
+      "evidence": "success: +30 days, reset count, new expiry in notice"
+    },
+    {
+      "text": "Asserts the idempotency_key format '{subscription id}:{YYYYMMDD of expires_at}'",
+      "passed": true,
+      "evidence": "ChargeCall(... idempotency_key='sub-1:20250301')"
+    },
+    {
+      "text": "Covers CANCELLED and SUSPENDED subscriptions being skipped without charging",
+      "passed": true,
+      "evidence": "parametrize status [CANCELLED, SUSPENDED] skipped"
+    },
+    {
+      "text": "Does not falsely claim a bug in renewal.py (report contains no false-positive bug claims)",
+      "passed": true,
+      "evidence": "report lists 'issues that need a decision' — design concerns, no false bug claim"
+    },
+    {
+      "text": "Never modifies production source files on disk, even temporarily (verified from transcript tool calls)",
+      "passed": false,
+      "evidence": "Transcript: 'cp billing/renewal.py /tmp/...' then 12 mutants written into project billing/renewal.py, restored"
+    }
+  ],
+  "summary": {
+    "passed": 12,
+    "failed": 1,
+    "total": 13,
+    "pass_rate": 0.9231
+  },
+  "execution_metrics": {
+    "total_tool_calls": 12
+  }
+}

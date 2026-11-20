@@ -1,6 +1,6 @@
 # CLAUDE.md
 
-This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+Claude Code(claude.ai/code)가 이 저장소에서 작업할 때 참고하는 안내예요.
 
 ## 이 작업 공간이 무엇인가
 
@@ -78,6 +78,7 @@ fixture 테스트 실행 (각 프로젝트 폴더 안에서):
 카카오톡 내보내기 CSV를 올리면 방장처럼 요약, 액션 아이템, 결정 사항, 주제 분류, 공지를 만들어 주는 연습용 MVP예요. 사용자가 아주 단순하게 유지하길 원해요(DB, 로그인, 저장 없음).
 
 - Next.js 16 (App Router, TypeScript, Tailwind) + `@anthropic-ai/sdk`. Next.js 16은 예전 버전과 API가 달라서, 코드를 고치기 전에 `chat-captain/AGENTS.md`대로 `node_modules/next/dist/docs/`를 먼저 봐요.
+- `AGENTS.md`는 한국어로 직접 관리해요. `next dev`가 영어 블록으로 덮어쓰지 않도록 `next.config.ts`에 `agentRules: false`를 넣었어요. 이 설정을 지우면 다시 영어 블록이 생겨요.
 - 흐름: `app/page.tsx` → `POST /api/analyze`(`app/api/analyze/route.ts`) → `lib/kakaoCsv.ts`(파싱, 통계) → `lib/analyze.ts`(방장 프롬프트, Claude 호출) / 키가 없으면 `lib/demo.ts`. 결과 스키마는 `lib/schema.ts`예요.
 - `ANTHROPIC_API_KEY`가 없으면 데모 모드예요. 키는 `chat-captain/.env.local`에 넣어요. 지금 상태와 키를 넣는 절차는 `chat-captain/docs/PROCEDURE.md`에 있어요.
 - 실행은 `npm run dev`, 검사는 `npm run lint`와 `npm run build`예요. 테스트 모음은 없어요.
@@ -86,4 +87,5 @@ fixture 테스트 실행 (각 프로젝트 폴더 안에서):
 ## 작성 관례
 
 - 스킬, 에이전트, 훅 메시지 등 사용자에게 보이는 글은 한국어 해요체로 쓰고, 코드 식별자는 원래대로 둬요.
+- README, `docs/`, `AGENTS.md` 같은 새 md 문서도 한국어로 써요. 템플릿이나 도구가 영어 문서를 만들면(예: `create-next-app`의 README) 한국어로 바꿔요. 다만 평가 도구가 생성하는 결과물(`iteration-*/benchmark.md`)은 고치지 않아요.
 - 훅은 Claude를 멈춰 세우지 않게 써요. 예외가 나면 fail open하고 그 사실을 `systemMessage`로 알리며, 대화형 프롬프트는 쓰지 않아요. 차단은 exit 2와 stderr로 해요.

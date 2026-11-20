@@ -4,11 +4,11 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## 이 작업 공간이 무엇인가
 
-애플리케이션 저장소가 아니라, 사용자의 **전역 Claude Code 커스터마이징**(스킬, 서브에이전트, 훅)을 만들고 평가하는 작업 공간이에요. git 저장소이고 원격은 `origin` = https://github.com/dyyoo2026/demo-project (**공개** 저장소, 기본 브랜치 `main`)이에요.
+사용자의 **전역 Claude Code 커스터마이징**(스킬, 서브에이전트, 훅)을 만들고 평가하는 작업 공간이에요. 연습용 앱 `chat-captain/`도 함께 들어 있어요(아래 [chat-captain](#chat-captain-방장봇-연습용-앱) 참고). git 저장소이고 원격은 `origin` = https://github.com/dyyoo2026/demo-project (**공개** 저장소, 기본 브랜치 `main`)이에요.
 
 - 공개 저장소라서 커밋 작성자는 이 저장소의 로컬 설정(`dyyoo2026 <dyyoo2026@users.noreply.github.com>`)을 써요. 비밀 값이나 개인 정보를 커밋하지 마세요.
 - `claude-config/`의 심볼릭 링크는 링크 경로만 커밋돼요. 링크가 가리키는 `~/.claude/` 쪽 내용은 저장소에 올라가지 않아요.
-- `.claude/precommit.json`이 `{"review": false}`라서 이 저장소에서는 커밋 게이트의 리뷰 승인 단계를 건너뛰어요(루트에 lint/build/test 설정이 없어서 검사도 사실상 없어요).
+- `.claude/precommit.json`이 `{"review": false}`라서 이 저장소에서는 커밋 게이트의 리뷰 승인 단계를 건너뛰어요(루트에 lint/build/test 설정이 없어서 검사도 사실상 없어요). 그래서 `chat-captain/`을 고쳤다면 커밋 전에 그 폴더에서 `npm run lint`와 `npm run build`를 직접 실행하세요.
 
 - `claude-config/` 안의 항목은 모두 `~/.claude/`를 가리키는 **심볼릭 링크**예요. 여기서 고치면 모든 세션에 즉시 적용되는 실제 전역 설정이 바뀌어요.
   - `settings.json` → `~/.claude/settings.json` (JSON이 깨지면 모든 세션의 훅과 설정이 깨져요)
@@ -72,6 +72,16 @@ fixture 테스트 실행 (각 프로젝트 폴더 안에서):
 | `order-java` (Java 17, JUnit 5 + Mockito + AssertJ) | `mvn -q test` | `mvn -q test -Dtest=OrderTest#<method>` |
 
 이 문서를 쓸 때 셸 PATH에서 `go`와 `mvn`을 찾지 못했어요. 실행하기 전에 위치를 확인하세요.
+
+## chat-captain (방장봇 연습용 앱)
+
+카카오톡 내보내기 CSV를 올리면 방장처럼 요약, 액션 아이템, 결정 사항, 주제 분류, 공지를 만들어 주는 연습용 MVP예요. 사용자가 아주 단순하게 유지하길 원해요(DB, 로그인, 저장 없음).
+
+- Next.js 16 (App Router, TypeScript, Tailwind) + `@anthropic-ai/sdk`. Next.js 16은 예전 버전과 API가 달라서, 코드를 고치기 전에 `chat-captain/AGENTS.md`대로 `node_modules/next/dist/docs/`를 먼저 봐요.
+- 흐름: `app/page.tsx` → `POST /api/analyze`(`app/api/analyze/route.ts`) → `lib/kakaoCsv.ts`(파싱, 통계) → `lib/analyze.ts`(방장 프롬프트, Claude 호출) / 키가 없으면 `lib/demo.ts`. 결과 스키마는 `lib/schema.ts`예요.
+- `ANTHROPIC_API_KEY`가 없으면 데모 모드예요. 키는 `chat-captain/.env.local`에 넣어요. 지금 상태와 키를 넣는 절차는 `chat-captain/docs/PROCEDURE.md`에 있어요.
+- 실행은 `npm run dev`, 검사는 `npm run lint`와 `npm run build`예요. 테스트 모음은 없어요.
+- 공개 저장소라서 사용자의 실제 카카오톡 CSV(계좌번호 등 개인정보 포함)는 저장소에 넣지 않아요. 테스트는 `samples/`의 가상 대화로 해요.
 
 ## 작성 관례
 
